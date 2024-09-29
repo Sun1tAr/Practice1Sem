@@ -1,0 +1,64 @@
+package ru;
+
+public class SteriodArray {
+
+    private int length;
+    private final String[] array;
+
+    public SteriodArray(int length){
+        this.array = new String[length];
+    }
+
+    public boolean add(String s){
+        for (int i = 0; i < this.array.length; i++){
+            if (this.array[i] == null){
+                this.array[i] = s;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean remove(String s){
+
+        for (int i = 0; i < this.array.length - 1; i++) {
+
+            if (this.array[i] == s) {
+                this.array[i] = null;
+                if (this.array[i + 1] != null) {
+                    while (this.array[i + 1] != null) {
+                        this.array[i] = this.array[i + 1];
+                        i++;
+                    }
+
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean remove(int i){
+        return true;
+    }
+
+    public String get(int i){
+        return this.array[i];
+    }
+
+    @Override
+    public String toString(){
+        String s = "";
+        for (int i = 0; i < this.array.length; i++){
+            s += this.array[i] + " / ";
+        }
+        return s;
+    }
+
+    public int length(){
+        return this.length;
+    }
+
+    public int maxLength(){
+        return 2;
+    }
+}
