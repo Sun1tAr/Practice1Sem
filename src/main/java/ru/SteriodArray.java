@@ -18,8 +18,17 @@ public class SteriodArray {
         }
         return false;
     }
-
-    public boolean remove(String s){
+public boolean remove(String s){
+        int i = 0;
+        for (String elem : this.array){
+            if (elem == s){
+                return this.remove(i);
+            } else {
+                return false;
+            }
+        }
+    }
+    public boolean remove2(String s){
 
         for (int i = 0; i < this.array.length - 1; i++) {
 
