@@ -80,6 +80,6 @@ public boolean remove(String s){
     }
 
     public int maxLength(){
-        return 2;
+        return Integer.MAX_VALUE;
     }
 }
