@@ -18,44 +18,31 @@ public class SteriodArray {
         }
         return false;
     }
-public boolean remove(String s){
-        int i = 0;
-        for (String elem : this.array){
-            if (elem == s){
-                return this.remove(i);
-            } else {
-                return false;
-            }
-        }
-    }
-    public boolean remove2(String s){
 
-        for (int i = 0; i < this.array.length - 1; i++) {
-
-            if (this.array[i] == s) {
-                this.array[i] = null;
-                if (this.array[i + 1] != null) {
-                    while (this.array[i + 1] != null) {
-                        this.array[i] = this.array[i + 1];
-                        i++;
-                    }
+    public boolean remove(String s){
+            int i = 0;
+            boolean flag = false;
+            for (String elem : this.array){
+                if (elem == s){
+                    flag = this.remove(i);
+                    i++;
 
                 }
             }
+            return flag;
         }
-        return true;
-    }
 
     public boolean remove(int i){
-        if (i+1 < this.array.length) {
+        if (i+1 > this.array.length) {
             return false;
         } else if (i+1 == this.array.length || this.array[i+1] == null) {
             this.array[i] = null;
             return true;
         } else {
             int j = i;
-            while(j != this.array.length - 2){
+            while(j != this.array.length - 1){
                 this.array[j] = this.array[j+1];
+                this.array[j+1] = null;
                 j++;
             }
             return true;
@@ -76,7 +63,14 @@ public boolean remove(String s){
     }
 
     public int length(){
-        return this.length;
+        int stringLength = 0;
+        for (String elem : this.array){
+            if (elem != null) {
+                String[] s = elem.split("");
+                for (String ss : s) stringLength++;
+            }
+        }
+        return stringLength;
     }
 
     public int maxLength(){

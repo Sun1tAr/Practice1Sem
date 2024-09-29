@@ -12,7 +12,13 @@ public class Main {
         str.add("1511");
 
         System.out.println(str.toString());
-        System.out.println(str.remove("1111"));
+        System.out.println(str.remove("1211"));
+        System.out.println(str.toString());
+        System.out.println(str.get(2));
+
+        System.out.println(str.length() + " / " + str.maxLength());
+
+
 
 
     }
