@@ -38,7 +38,19 @@ public class SteriodArray {
     }
 
     public boolean remove(int i){
-        return true;
+        if (i+1 < this.array.length) {
+            return false;
+        } else if (i+1 == this.array.length || this.array[i+1] == null) {
+            this.array[i] = null;
+            return true;
+        } else {
+            int j = i;
+            while(j != this.array.length - 2){
+                this.array[j] = this.array[j+1];
+                j++;
+            }
+            return true;
+        }
     }
 
     public String get(int i){
