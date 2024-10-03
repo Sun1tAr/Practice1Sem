@@ -74,6 +74,15 @@ public class SteriodArray {
     }
 
     public int maxLength(){
-        return Integer.MAX_VALUE;
+        int maxLength = 0;
+        for (String elem : this.array){
+            int stringLength = 0;
+            if (elem != null) {
+                String[] s = elem.split("");
+                for (String ss : s) stringLength++;
+                if (stringLength > maxLength) maxLength = stringLength;
+            }
+        }
+        return maxLength;
     }
 }
