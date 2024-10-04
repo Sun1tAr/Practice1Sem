@@ -1,4 +1,4 @@
-package ru;
+package myClasses;
 
 public class SteriodArray {
 
