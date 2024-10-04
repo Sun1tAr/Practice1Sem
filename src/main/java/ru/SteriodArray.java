@@ -3,7 +3,7 @@ package ru;
 public class SteriodArray {
 
     private int length;
-    private final String[] array;
+    private String[] array;
 
     public SteriodArray(int length){
         this.array = new String[length];
@@ -66,23 +66,13 @@ public class SteriodArray {
         int stringLength = 0;
         for (String elem : this.array){
             if (elem != null) {
-                String[] s = elem.split("");
-                for (String ss : s) stringLength++;
+                stringLength++;
             }
         }
         return stringLength;
     }
 
     public int maxLength(){
-        int maxLength = 0;
-        for (String elem : this.array){
-            int stringLength = 0;
-            if (elem != null) {
-                String[] s = elem.split("");
-                for (String ss : s) stringLength++;
-                if (stringLength > maxLength) maxLength = stringLength;
-            }
-        }
-        return maxLength;
+        return this.length;
     }
 }
