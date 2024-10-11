@@ -3,18 +3,57 @@ package myClasses.TripletDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class TripletDeque<T> implements Deque<T>, Containerable {
-    private int deqLength;
+
+
+    private int size;
+    private int fulledSize = 0;
     private Container<T> first;
     private Container<T> last;
 
+    private boolean isNotFull(){
+        return this.fulledSize < this.size;
+    }
+    private void addLastCont(){
+        if(!isNotFull()) return;
+
+        Container<T> newLastCont = new Container<>(this.last.getIndex() + 1);
+        this.fulledSize++;
+        this.last.setRight(newLastCont);
+        newLastCont.setLeft(this.last);
+        this.last = newLastCont;
+    }
+    private boolean addFirstCont(){
+        if (!this.isNotFull()) return false;
+        Container<T> newFirstCont = new Container<>(this.first.getIndex() - 1);
+        this.fulledSize++;
+        this.first.setLeft(newFirstCont);
+        newFirstCont.setRight(this.first);
+        this.first = newFirstCont;
+        this.reIndex();
+        return true;
+    }
+    private void reIndex(){
+        Container<T> current = this.last;
+        for (int i = fulledSize - 1; i >= 0; i--){
+            current.setIndex(i);
+            current = current.getLeft();
+        }
+    }
+
+    public TripletDeque (int size) {
+        this.size = size;
+        this.first = new Container<T>(0);
+        this.last = this.first;
+        this.fulledSize++;
+    }
     public TripletDeque () {
-        this.deqLength = 1000;
-        this.first = new Container<T>();
-        this.last = new Container<T>();
-
-
+        this.size = 1000;
+        this.first = new Container<T>(0);
+        this.last = this.first;
+        this.fulledSize++;
     }
 
     @Override
@@ -24,7 +63,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public void addLast(T t) {
-
+        this.offer(t);
     }
 
     @Override
@@ -34,7 +73,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public boolean offerLast(T t) {
-        return false;
+        return this.offer(t);
     }
 
     @Override
@@ -64,12 +103,12 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public T getLast() {
-        return null;
+        return this.element();
     }
 
     @Override
     public T peekFirst() {
-        return null;
+        return this.peek();
     }
 
     @Override
@@ -89,12 +128,21 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public boolean add(T t) {
-        return false;
+
+        if (this.last.isNotFullLast()){
+            this.last.setLastElement(t);
+            return true;
+        } else {
+            if (!this.isNotFull()) return false;
+            this.addLastCont();
+            this.last.setLastElement(t);
+            return true;
+        }
     }
 
     @Override
     public boolean offer(T t) {
-        return false;
+        return this.add(t);
     }
 
     @Override
@@ -109,12 +157,15 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public T element() {
-        return null;
+        if (this.isEmpty()){
+            throw new NoSuchElementException("Очередь пуста");
+        }
+        return this.peek();
     }
 
     @Override
     public T peek() {
-        return null;
+        return this.first.getBeginElement();
     }
 
     @Override
@@ -164,12 +215,12 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.fulledSize < 1 || (this.fulledSize == 1 && this.first.isEmpty());
     }
 
     @Override
@@ -194,6 +245,15 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public Object[] getContainerByIndex(int cIndex) {
-        return new Object[0];
+        Container<T> current = this.first;
+        for (int i = 0; i < fulledSize; i++){
+            int index = current.getIndex();
+            if (index == cIndex) {
+                return current.getValues();
+            }
+            current = current.getRight();
+        }
+        return null;
     }
+
 }
