@@ -11,17 +11,6 @@ public class Main {
 
 
 
-        for(int i = 0; i < 10; i++){
-            tQueue.addLast( String.valueOf(i) );
-        }
-
-        System.out.println(tQueue.toString());
-
-        for(int i = 0; i < 10; i++){
-            System.out.println((String.valueOf(i) + "----" + tQueue.removeFirst()));
-        }
-
-
 
 
 

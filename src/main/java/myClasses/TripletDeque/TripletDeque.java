@@ -344,6 +344,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             @Override
             public T next() {
                 cursor++;
+                if (els[cursor] == null) throw new NoSuchElementException();
                 return els[cursor];
             }
         };
