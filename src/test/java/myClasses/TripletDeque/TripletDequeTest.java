@@ -255,6 +255,10 @@ class TripletDequeTest {
         Object[] cntr = cQueue.getContainerByIndex(0);
         Assertions.assertTrue(cntr[0] != null && cntr[cntr.length-1] != null);
         tQueue.remove("2");
+
+//        Эта строка отсутствует!!!
+        cntr = cQueue.getContainerByIndex(0);
+
         Assertions.assertTrue(cntr[0] == null || cntr[cntr.length-1] == null);
 
         for (int i=1; i < cntr.length-2; i++){

@@ -338,6 +338,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             int cursor = -1;
             @Override
             public boolean hasNext() {
+                if (cursor + 1 == els.length) return false;
                 return (els[cursor + 1] != null);
             }
 
@@ -359,6 +360,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
                 list.add(elem[j]);
             }
             current = current.getRight();
+            if (current == null) continue;
         }
         Object[] arr = new Object[list.size()];
         for (int i = 0; i < list.size(); i++){
@@ -384,7 +386,8 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         if (this.isEmpty()) throw new NullPointerException("Может добавить сначала элементы?..");
         StringBuilder stringDeq = new StringBuilder();
         for (int i = 0; i < fulledSize; i ++){
-            stringDeq.append(Arrays.toString(this.getContainerByIndex(i))).append(" <-> ");
+            stringDeq.append(Arrays.toString(this.getContainerByIndex(i)));
+            if (i != this.fulledSize - 1) stringDeq.append(" <-> ");
         }
         return stringDeq.toString();
     }
