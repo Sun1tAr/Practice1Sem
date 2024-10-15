@@ -50,9 +50,9 @@ public class Container<T> {
         }
         return null;
     }
-    public void setElementByIndex(int index, T element) {
-        this.values[index] = element;
-    }
+//    public void setElementByIndex(int index, T element) {
+//        this.values[index] = element;
+//    }
     public boolean isNotFullLast(){
         if (values[this.volume - 1] != null) return false;
         for (int i = 0; i < this.volume; i++){
@@ -106,13 +106,19 @@ public class Container<T> {
     }
     public void delBeginElem(){
         for (int i = 0; i < this.volume; i++){
-            if (this.values[i] != null) this.values[i] = null;
+            if (this.values[i] != null){
+                this.values[i] = null;
+                return;
+            }
         }
 
     }
     public void delLastElem(){
         for (int i = this.volume - 1; i >= 0; i--){
-            if (this.values[i] != null) this.values[i] = null;
+            if (this.values[i] != null) {
+                this.values[i] = null;
+                return;
+            }
         }
     }
     public void delete(){
@@ -138,24 +144,24 @@ public class Container<T> {
         return false;
     }
 
-    public boolean containsL(Object o){
-        for (int i = this.volume - 1; i >= 0; i--){
-            if (this.values[i].equals(o)){
-                return true;
-            }
-        }
-        return false;
-    }
-    public int getElementIndexFirst(Object o){
-        for (int i = 0; i < this.volume; i++){
-            if (this.values[i].equals(o)) return i;
-        }
-        throw new NullPointerException("Ошибка поиска индекса элемента");
-    }
-    public void deleteByIndex(int eIndex){
-        this.values[eIndex] = null;
-
-    }
+//    public boolean containsL(Object o){
+//        for (int i = this.volume - 1; i >= 0; i--){
+//            if (this.values[i].equals(o)){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//    public int getElementIndexFirst(Object o){
+//        for (int i = 0; i < this.volume; i++){
+//            if (this.values[i].equals(o)) return i;
+//        }
+//        throw new NullPointerException("Ошибка поиска индекса элемента");
+//    }
+//    public void deleteByIndex(int eIndex){
+//        this.values[eIndex] = null;
+//
+//    }
 
     @Override
     public String toString() {
