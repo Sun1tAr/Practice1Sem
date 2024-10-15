@@ -39,18 +39,14 @@ public class Container<T> {
         this.index = index;
     }
     public T getBeginElement(){
-        for (int i = this.volume - 1; i >= 0; i--){
-            if (values[i] == null){
-                return values[i+1];
-            }
+        for (int i = 0; i < this.volume; i++){
+            if (this.values[i] != null) return this.values[i];
         }
         return null;
     }
     public T getLastElement(){
-        for (int i = 0; i < this.volume; i++){
-            if (values[i] == null){
-                return values[i-1];
-            }
+        for (int i = this.volume - 1; i >= 0; i--){
+            if (this.values[i] != null) return this.values[i];
         }
         return null;
     }
@@ -58,6 +54,7 @@ public class Container<T> {
         this.values[index] = element;
     }
     public boolean isNotFullLast(){
+        if (values[this.volume - 1] != null) return false;
         for (int i = 0; i < this.volume; i++){
             if (values[i] == null){
                 return true;
@@ -66,6 +63,7 @@ public class Container<T> {
         return false;
     }
     public boolean isNotFullBegin(){
+        if (values[0] != null) return false;
         for (int i = this.volume - 1; i >= 0; i--){
             if (this.values[i] == null){
                 return true;
@@ -74,19 +72,27 @@ public class Container<T> {
         return false;
     }
     public void setLastElement(T t){
-        for (int i = 0; i < this.volume; i++){
-            if (this.values[i] == null){
-                this.values[i] = t;
+        if (this.isEmpty()){
+            this.values[0] = t;
+            return;
+        }
+        for (int i = 0; i < this.volume - 2; i++){
+            if (this.values[i] != null && this.values[i+1] == null){
+                this.values[i+1] = t;
                 return;
             }
         }
     }
     public void setBeginElement(T t){
-        for (int i = this.volume - 1; i >= 0; i--){
-           if (this.values[i] == null){
-               this.values[i] = t;
-               return;
-           }
+        if (this.isEmpty()){
+            this.values[this.volume - 1] = t;
+            return;
+        }
+        for (int i = this.volume - 1; i > 0; i--){
+            if (this.values[i] != null && this.values[i-1] == null){
+                this.values[i-1] = t;
+                return;
+            }
         }
     }
     public boolean isEmpty(){
@@ -96,23 +102,17 @@ public class Container<T> {
                 count++;
             }
         }
-        return count == volume-1;
+        return count == volume;
     }
     public void delBeginElem(){
-        for (int i = this.volume - 1; i >= 0; i--){
-            if (values[i] == null){
-                values[i+1] = null;
-                return;
-            }
+        for (int i = 0; i < this.volume; i++){
+            if (this.values[i] != null) this.values[i] = null;
         }
 
     }
     public void delLastElem(){
-        for (int i = 0; i < this.volume; i++){
-            if (values[i] == null){
-                values[i-1] = null;
-                return;
-            }
+        for (int i = this.volume - 1; i >= 0; i--){
+            if (this.values[i] != null) this.values[i] = null;
         }
     }
     public void delete(){
@@ -130,6 +130,7 @@ public class Container<T> {
     }
     public boolean contains(Object o){
         for (int i = 0; i < this.volume; i++){
+            if (this.values[i] == null) continue;
             if (this.values[i].equals(o)){
                 return true;
             }

@@ -56,15 +56,11 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
     }
     private void delFirst(){
         this.first.delBeginElem();
-        if (this.first.isEmpty()){
-            this.delFirstCont();
-        }
+
     }
     private void delLast(){
         this.first.delLastElem();
-        if (this.last.isEmpty()){
-            this.delLastCont();
-        }
+
     }
     private Container<T> get1ContainerByIndex(int cIndex) {
         Container<T> current = this.first;
@@ -99,11 +95,12 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public void addLast(T t) {
-        this.offer(t);
+        this.offerLast(t);
     }
 
     @Override
     public boolean offerFirst(T t) {
+        if (t == null) throw new NullPointerException("Введеный элемент пуст");
         if (!this.isNotFull()) return false;
         if (!this.first.isNotFullBegin()){
             this.addFirstCont();
@@ -114,23 +111,31 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public boolean offerLast(T t) {
-        return this.offer(t);
+        if (t == null) throw new NullPointerException("Введеный элемент пуст");
+        if (!this.isNotFull()) return false;
+        if (!this.last.isNotFullLast()){
+            this.addLastCont();
+        }
+        this.last.setLastElement(t);
+        return true;
     }
 
     @Override
     public T removeFirst() {
-        if (this.pollFirst() == null) {
+        T elem = this.pollFirst();
+        if (elem == null) {
             throw new NoSuchElementException("Очередь пуста");
         }
-        return this.pollFirst();
+        return elem;
     }
 
     @Override
     public T removeLast() {
-        if (this.pollLast() == null) {
+        T elem = this.pollLast();
+        if (elem == null) {
             throw new NoSuchElementException("Очередь пуста");
         }
-        return this.pollLast();
+        return elem;
     }
 
     @Override
@@ -151,27 +156,26 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public T getFirst() {
-        if (this.isEmpty()){
-            throw new NoSuchElementException("Очередь пуста");
-        }
-        return this.peekFirst();
+        if (this.isEmpty()) throw new NoSuchElementException("Очередь пуста");
+        return this.first.getBeginElement();
     }
 
     @Override
     public T getLast() {
-        return this.element();
+        if (this.isEmpty()) throw new NoSuchElementException("Очередь пуста");
+        return this.last.getLastElement();
     }
 
     @Override
     public T peekFirst() {
         if (this.isEmpty()) return null;
-        return this.peek();
+        return this.first.getBeginElement();
     }
 
     @Override
     public T peekLast() {
         if (this.isEmpty()) return null;
-        return (this.last.getLastElement());
+        return this.last.getLastElement();
     }
 
     @Override
@@ -183,7 +187,8 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         for (int i = 0; i < this.fulledSize; i++) {
             T[] elem = current.getValues();
             for (int j = 0; j < current.getVolume(); j++){
-                if (flag && elem[j].equals(0)) {
+                if (elem[j] == null) continue;
+                if (flag && elem[j].equals(o)) {
                     flag = false;
                     continue;
                 }
@@ -192,6 +197,10 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             current = current.getRight();
         }
         this.clear();
+        this.size = 1000;
+        this.first = new Container<T>(0);
+        this.last = this.first;
+        this.fulledSize++;
         for (T t : list) {
             if (t != null) {
                 this.add(t);
@@ -209,7 +218,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         for (int i = this.fulledSize - 1; i >= 0; i--) {
             T[] elem = current.getValues();
             for (int j = current.getVolume(); j >= 0 ; j--){
-                if (flag && elem[j].equals(0)) {
+                if (flag && elem[j].equals(o)) {
                     flag = false;
                     continue;
                 }
@@ -218,6 +227,10 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             current = current.getLeft();
         }
         this.clear();
+        this.size = 1000;
+        this.first = new Container<T>(0);
+        this.last = this.first;
+        this.fulledSize++;
         for (T t : list) {
             if (t != null) {
                 this.addFirst(t);
@@ -228,21 +241,12 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public boolean add(T t) {
-
-        if (this.last.isNotFullLast()){
-            this.last.setLastElement(t);
-            return true;
-        } else {
-            if (!this.isNotFull()) return false;
-            this.addLastCont();
-            this.last.setLastElement(t);
-            return true;
-        }
+        return this.offer(t);
     }
 
     @Override
     public boolean offer(T t) {
-        return this.add(t);
+        return this.offerLast(t);
     }
 
     @Override
@@ -265,8 +269,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public T peek() {
-        if (this.isEmpty()) return null;
-        return this.first.getBeginElement();
+        return this.peekFirst();
     }
 
     @Override
@@ -313,7 +316,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public int size() {
-        return this.size;
+        return this.fulledSize;
     }
 
     @Override
@@ -338,12 +341,6 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             }
         };
     }
-// --------------------------------------------------------------------------------------------
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Not realized!");
-    }
-
     @Override
     public Object[] toArray() {
         ArrayList<T> list = new ArrayList<>();
@@ -351,7 +348,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         for (int i = 0; i < this.fulledSize; i++) {
             T[] elem = current.getValues();
             for (int j = 0; j < current.getVolume(); j++){
-               list.add(elem[j]);
+                list.add(elem[j]);
             }
             current = current.getRight();
         }
@@ -360,6 +357,35 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             arr[i] = list.get(i);
         }
         return arr;
+    }
+    @Override
+    public Object[] getContainerByIndex(int cIndex) {
+        Container<T> current = this.first;
+        for (int i = 0; i < fulledSize; i++){
+            int index = current.getIndex();
+            if (index == cIndex) {
+                return current.getValues();
+            }
+            current = current.getRight();
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        if (this.isEmpty()) throw new NullPointerException();
+        StringBuilder stringDeq = new StringBuilder();
+        for (int i = 0; i < fulledSize; i ++){
+            stringDeq.append(Arrays.toString(this.getContainerByIndex(i))).append(" <-> ");
+        }
+        return stringDeq.toString();
+    }
+
+    // --------------------------------------------------------------------------------------------
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Not realized!");
     }
 
     @Override
@@ -380,19 +406,6 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
     @Override
     public boolean containsAll(Collection<?> c) {
         throw new UnsupportedOperationException("Not realized!");
-    }
-
-    @Override
-    public Object[] getContainerByIndex(int cIndex) {
-        Container<T> current = this.first;
-        for (int i = 0; i < fulledSize; i++){
-            int index = current.getIndex();
-            if (index == cIndex) {
-                return current.getValues();
-            }
-            current = current.getRight();
-        }
-        return null;
     }
 
 }

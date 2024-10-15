@@ -7,31 +7,23 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-        TripletDeque<Integer> deq = new TripletDeque<>();
+        TripletDeque<String> tQueue = new TripletDeque<>();
 
-        System.out.println(deq.offerFirst(1));
-        System.out.println(deq.offerFirst(2));
-        System.out.println(deq.offerFirst(3));
-        System.out.println(deq.offerFirst(4));
-        System.out.println(deq.offerFirst(5));
+        tQueue.addLast("ef");
+        tQueue.addLast("ef2");
 
-        System.out.println(deq.offerFirst(6));
-        System.out.println(deq.offerFirst(8));
-        System.out.println(deq.offerFirst(9));
-        System.out.println(deq.offerFirst(10));
-        System.out.println(deq.offerFirst(21));
 
-        System.out.println(deq.offerFirst(31));
-        System.out.println(deq.offerFirst(41));
+        System.out.println(tQueue.toString());
 
-        try {
-            String s = Arrays.toString((deq.getContainerByIndex(0)));
-            System.out.println(s);
-        } catch (RuntimeException e){
-            e.printStackTrace();
-        }
 
-        deq.iterator().hasNext();
+
+//        System.out.println(tQueue.removeFirst());
+
+
+
+
+
+
 
 
 

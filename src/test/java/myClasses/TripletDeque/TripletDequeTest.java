@@ -1,15 +1,18 @@
+package myClasses.TripletDeque;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.mpei.Containerable;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TripletTests {
+class TripletDequeTest {
 
-    private Deque<String> tQueue;
+    private Deque<String> tQueue = new TripletDeque<>();
     private Containerable cQueue = (Containerable) tQueue;
 
     @Test
@@ -283,8 +286,9 @@ public class TripletTests {
 
     }
 
-    @BeforeEach
-    void beforeEach(){
-        tQueue.clear();
-    }
+//    @AfterEach
+//    void beforeEach(){
+//        tQueue.clear();
+//    }
+
 }
