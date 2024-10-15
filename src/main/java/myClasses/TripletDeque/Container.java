@@ -66,7 +66,7 @@ public class Container<T> {
     public boolean isNotFullBegin(){
         if (this.isEmpty()) return true;
         if (values[0] != null) return false;
-        for (int i = 0; i < this.volume - 2; i++){
+        for (int i = 0; i < this.volume - 1; i++){
             if (this.values[i] == null && this.values[i+1] != null){
                 return true;
             }

@@ -287,9 +287,9 @@ class TripletDequeTest {
 
     }
 
-//    @AfterEach
-//    void beforeEach(){
-//        tQueue.clear();
-//    }
+    @AfterEach
+    void beforeEach(){
+        tQueue.clear();
+    }
 
 }
