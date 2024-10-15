@@ -54,29 +54,32 @@ public class Container<T> {
 //        this.values[index] = element;
 //    }
     public boolean isNotFullLast(){
+        if (this.isEmpty()) return true;
         if (values[this.volume - 1] != null) return false;
-        for (int i = 0; i < this.volume; i++){
-            if (values[i] == null){
+        for (int i = this.volume - 1; i > 0; i--){
+            if (this.values[i] == null && this.values[i-1] != null){
                 return true;
             }
         }
         return false;
     }
     public boolean isNotFullBegin(){
+        if (this.isEmpty()) return true;
         if (values[0] != null) return false;
-        for (int i = this.volume - 1; i >= 0; i--){
-            if (this.values[i] == null){
+        for (int i = 0; i < this.volume - 2; i++){
+            if (this.values[i] == null && this.values[i+1] != null){
                 return true;
             }
         }
         return false;
     }
+
     public void setLastElement(T t){
         if (this.isEmpty()){
             this.values[0] = t;
             return;
         }
-        for (int i = 0; i < this.volume - 2; i++){
+        for (int i = 0; i < this.volume - 1; i++){
             if (this.values[i] != null && this.values[i+1] == null){
                 this.values[i+1] = t;
                 return;
@@ -123,7 +126,7 @@ public class Container<T> {
     }
     public void delete(){
         this.values = null;
-        this.index = Integer.parseInt(null);
+        this.index = Integer.MIN_VALUE;
         this.left = null;
         this.right = null;
 

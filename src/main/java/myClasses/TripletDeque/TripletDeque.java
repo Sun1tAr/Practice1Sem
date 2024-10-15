@@ -33,6 +33,8 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         this.reIndex();
     }
     private void delFirstCont(){
+        if (!this.first.isEmpty()) return;
+
         Container <T> oldFirst = this.first;
         this.first = this.first.getRight();
         fulledSize--;
@@ -41,6 +43,8 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         this.reIndex();
     }
     private void delLastCont(){
+        if (!this.last.isEmpty()) return;
+
         Container <T> oldLast = this.last;
         this.last = this.last.getLeft();
         fulledSize--;
@@ -56,11 +60,14 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
     }
     private void delFirst(){
         this.first.delBeginElem();
+        if (this.fulledSize == 1) return;
+        this.delFirstCont();
 
     }
     private void delLast(){
-        this.first.delLastElem();
-
+        this.last.delLastElem();
+        if (this.fulledSize == 1) return;
+        this.delLastCont();
     }
     private Container<T> get1ContainerByIndex(int cIndex) {
         Container<T> current = this.first;
@@ -373,7 +380,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public String toString() {
-        if (this.isEmpty()) throw new NullPointerException();
+        if (this.isEmpty()) throw new NullPointerException("Может добавить сначала элементы?..");
         StringBuilder stringDeq = new StringBuilder();
         for (int i = 0; i < fulledSize; i ++){
             stringDeq.append(Arrays.toString(this.getContainerByIndex(i))).append(" <-> ");
