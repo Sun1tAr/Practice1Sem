@@ -145,24 +145,6 @@ public class Container<T> {
         return false;
     }
 
-//    public boolean containsL(Object o){
-//        for (int i = this.volume - 1; i >= 0; i--){
-//            if (this.values[i].equals(o)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//    public int getElementIndexFirst(Object o){
-//        for (int i = 0; i < this.volume; i++){
-//            if (this.values[i].equals(o)) return i;
-//        }
-//        throw new NullPointerException("Ошибка поиска индекса элемента");
-//    }
-//    public void deleteByIndex(int eIndex){
-//        this.values[eIndex] = null;
-//
-//    }
 
     @Override
     public String toString() {

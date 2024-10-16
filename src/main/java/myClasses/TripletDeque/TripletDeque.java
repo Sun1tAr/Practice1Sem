@@ -6,19 +6,19 @@ import java.util.*;
 public class TripletDeque<T> implements Deque<T>, Containerable {
 
 
-    private int size;
-    private int fulledSize = 0;
+    private int maxSize;
+    private int size = 0;
     private Container<T> first;
     private Container<T> last;
 
     private boolean isNotFull(){
-        return this.fulledSize < this.size;
+        return this.size < this.maxSize;
     }
     private void addLastCont(){
         if(!isNotFull()) return;
 
         Container<T> newLastCont = new Container<>(this.last.getIndex() + 1);
-        this.fulledSize++;
+        this.size++;
         this.last.setRight(newLastCont);
         newLastCont.setLeft(this.last);
         this.last = newLastCont;
@@ -26,7 +26,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
     private void addFirstCont(){
         if (!this.isNotFull()) return;
         Container<T> newFirstCont = new Container<>(this.first.getIndex() - 1);
-        this.fulledSize++;
+        this.size++;
         this.first.setLeft(newFirstCont);
         newFirstCont.setRight(this.first);
         this.first = newFirstCont;
@@ -37,7 +37,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
         Container <T> oldFirst = this.first;
         this.first = this.first.getRight();
-        fulledSize--;
+        size--;
         this.first.deleteLeft();
         oldFirst.delete();
         this.reIndex();
@@ -47,52 +47,40 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
         Container <T> oldLast = this.last;
         this.last = this.last.getLeft();
-        fulledSize--;
+        size--;
         this.last.deleteRight();
         oldLast.delete();
     }
     private void reIndex(){
         Container<T> current = this.last;
-        for (int i = fulledSize - 1; i >= 0; i--){
+        for (int i = size - 1; i >= 0; i--){
             current.setIndex(i);
             current = current.getLeft();
         }
     }
     private void delFirst(){
         this.first.delBeginElem();
-        if (this.fulledSize == 1) return;
+        if (this.size == 1) return;
         this.delFirstCont();
 
     }
     private void delLast(){
         this.last.delLastElem();
-        if (this.fulledSize == 1) return;
+        if (this.size == 1) return;
         this.delLastCont();
     }
-    private Container<T> get1ContainerByIndex(int cIndex) {
-        Container<T> current = this.first;
-        for (int i = 0; i < fulledSize; i++){
-            int index = current.getIndex();
-            if (index == cIndex) {
-                return current;
-            }
-            current = current.getRight();
-        }
-        return null;
-    }
 
-
-    public TripletDeque (int size) {
-        this.size = size;
+    public TripletDeque (int maxSize) {
+        this.maxSize = maxSize;
         this.first = new Container<T>(0);
         this.last = this.first;
-        this.fulledSize++;
+        this.size++;
     }
     public TripletDeque () {
-        this.size = 1000;
+        this.maxSize = 1000;
         this.first = new Container<T>(0);
         this.last = this.first;
-        this.fulledSize++;
+        this.size++;
     }
 
     @Override
@@ -193,7 +181,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         boolean flag = true;
         int cursor = 0;
 
-        for (int i = 0; i < this.fulledSize; i++) {
+        for (int i = 0; i < this.size; i++) {
             T[] elem = current.getValues();
             for (int j = 0; j < current.getVolume(); j++){
                 if (elem[j] == null) continue;
@@ -211,7 +199,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         }
 
         current = this.first;
-        for (int i = 0; i < this.fulledSize; i++) {
+        for (int i = 0; i < this.size; i++) {
             while (current.isNotFullLast() && cursor < list.size()){
                 current.setLastElement(list.get(cursor));
                 cursor++;
@@ -230,7 +218,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         boolean flag = true;
 
 
-        for (int i = this.fulledSize - 1; i >= 0; i--) {
+        for (int i = this.size - 1; i >= 0; i--) {
             T[] elem = current.getValues();
             for (int j = current.getVolume() - 1; j >= 0 ; j--){
                 if (elem[j] == null) continue;
@@ -249,7 +237,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
         int cursor = 0;
         current = this.last;
-        for (int i = this.fulledSize-1; i >= 0; i--) {
+        for (int i = this.size -1; i >= 0; i--) {
             while (current.isNotFullBegin() && cursor < list.size()){
                 current.setBeginElement(list.get(cursor));
                 cursor++;
@@ -304,7 +292,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public void clear() {
-        this.fulledSize = 0;
+        this.size = 0;
         this.last = null;
         this.first = null;
 
@@ -328,7 +316,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
     @Override
     public boolean contains(Object o) {
         Container <T> current = this.first;
-        for (int i = 0; i < this.fulledSize; i++){
+        for (int i = 0; i < this.size; i++){
             if (current.contains(o)) return true;
             current = current.getRight();
         }
@@ -337,12 +325,12 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
 
     @Override
     public int size() {
-        return this.fulledSize;
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return this.fulledSize < 1 || (this.fulledSize == 1 && this.first.isEmpty());
+        return this.size < 1 || (this.size == 1 && this.first.isEmpty());
     }
 
     @Override
@@ -364,11 +352,12 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             }
         };
     }
+
     @Override
     public Object[] toArray() {
         ArrayList<T> list = new ArrayList<>();
         Container<T> current = this.first;
-        for (int i = 0; i < this.fulledSize; i++) {
+        for (int i = 0; i < this.size; i++) {
             T[] elem = current.getValues();
             for (int j = 0; j < current.getVolume(); j++){
                 list.add(elem[j]);
@@ -382,10 +371,11 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         }
         return arr;
     }
+
     @Override
     public Object[] getContainerByIndex(int cIndex) {
         Container<T> current = this.first;
-        for (int i = 0; i < fulledSize; i++){
+        for (int i = 0; i < size; i++){
             int index = current.getIndex();
             if (index == cIndex) {
                 return current.getValues();
@@ -399,9 +389,9 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
     public String toString() {
         if (this.isEmpty()) throw new NullPointerException("Может добавить сначала элементы?..");
         StringBuilder stringDeq = new StringBuilder();
-        for (int i = 0; i < fulledSize; i ++){
+        for (int i = 0; i < size; i ++){
             stringDeq.append(Arrays.toString(this.getContainerByIndex(i)));
-            if (i != this.fulledSize - 1) stringDeq.append(" <-> ");
+            if (i != this.size - 1) stringDeq.append(" <-> ");
         }
         return stringDeq.toString();
     }
