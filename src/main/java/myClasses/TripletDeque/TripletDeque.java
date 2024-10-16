@@ -191,28 +191,34 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         ArrayList<T> list = new ArrayList<>();
         Container<T> current = this.first;
         boolean flag = true;
+        int cursor = 0;
+
         for (int i = 0; i < this.fulledSize; i++) {
             T[] elem = current.getValues();
             for (int j = 0; j < current.getVolume(); j++){
                 if (elem[j] == null) continue;
                 if (flag && elem[j].equals(o)) {
+                    elem[j] = null;
                     flag = false;
                     continue;
                 }
-                list.add(elem[j]);
+                if (!flag) {
+                    list.add(elem[j]);
+                    elem[j] = null;
+                }
             }
             current = current.getRight();
         }
-        this.clear();
-        this.size = 1000;
-        this.first = new Container<T>(0);
-        this.last = this.first;
-        this.fulledSize++;
-        for (T t : list) {
-            if (t != null) {
-                this.add(t);
+
+        current = this.first;
+        for (int i = 0; i < this.fulledSize; i++) {
+            while (current.isNotFullLast() && cursor < list.size()){
+                current.setLastElement(list.get(cursor));
+                cursor++;
             }
+            current = current.getRight();
         }
+        this.delLastCont();
         return true;
     }
 
@@ -222,27 +228,35 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         ArrayList<T> list = new ArrayList<>();
         Container<T> current = this.last;
         boolean flag = true;
+
+
         for (int i = this.fulledSize - 1; i >= 0; i--) {
             T[] elem = current.getValues();
-            for (int j = current.getVolume(); j >= 0 ; j--){
+            for (int j = current.getVolume() - 1; j >= 0 ; j--){
+                if (elem[j] == null) continue;
                 if (flag && elem[j].equals(o)) {
+                    elem[j] = null;
                     flag = false;
                     continue;
                 }
-                list.add(elem[j]);
+                if (!flag) {
+                    list.add(elem[j]);
+                    elem[j] = null;
+                }
             }
             current = current.getLeft();
         }
-        this.clear();
-        this.size = 1000;
-        this.first = new Container<T>(0);
-        this.last = this.first;
-        this.fulledSize++;
-        for (T t : list) {
-            if (t != null) {
-                this.addFirst(t);
+
+        int cursor = 0;
+        current = this.last;
+        for (int i = this.fulledSize-1; i >= 0; i--) {
+            while (current.isNotFullBegin() && cursor < list.size()){
+                current.setBeginElement(list.get(cursor));
+                cursor++;
             }
+            current = current.getLeft();
         }
+        this.delFirstCont();
         return true;
     }
 

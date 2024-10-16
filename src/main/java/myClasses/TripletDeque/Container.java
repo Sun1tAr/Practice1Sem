@@ -50,12 +50,10 @@ public class Container<T> {
         }
         return null;
     }
-//    public void setElementByIndex(int index, T element) {
-//        this.values[index] = element;
-//    }
+
     public boolean isNotFullLast(){
         if (this.isEmpty()) return true;
-        if (values[this.volume - 1] != null) return false;
+        if (values[this.volume - 1] == null) return true;
         for (int i = this.volume - 1; i > 0; i--){
             if (this.values[i] == null && this.values[i-1] != null){
                 return true;
