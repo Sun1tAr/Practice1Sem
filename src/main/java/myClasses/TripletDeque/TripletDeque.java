@@ -338,6 +338,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         return new Iterator<T>() {
             T[] els = (T[]) toArray();
             int cursor = -1;
+
             @Override
             public boolean hasNext() {
                 if (cursor + 1 == els.length) return false;
@@ -347,7 +348,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
             @Override
             public T next() {
                 cursor++;
-                if (els[cursor] == null) throw new NoSuchElementException();
+                if (els.length == 0 || els[cursor] == null) throw new NoSuchElementException();
                 return els[cursor];
             }
         };
@@ -360,6 +361,7 @@ public class TripletDeque<T> implements Deque<T>, Containerable {
         for (int i = 0; i < this.size; i++) {
             T[] elem = current.getValues();
             for (int j = 0; j < current.getVolume(); j++){
+                if (elem[j] == null) continue;
                 list.add(elem[j]);
             }
             current = current.getRight();

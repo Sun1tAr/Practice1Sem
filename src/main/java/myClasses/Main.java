@@ -6,19 +6,23 @@ import myClasses.TripletDeque.TripletDeque;
 
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.Iterator;
 
 public class Main {
     public static void main(String[] args) {
 
 
         TripletDeque<String> tQueue = new TripletDeque<>();
+        Deque<String> ttQueue = new TripletDeque<>();
 
-        for (int i =0; i < 15; i++){
-            tQueue.addFirst(i+"");
-        }
-        System.out.println(tQueue.toString());
-        tQueue.removeLastOccurrence("6");
-        System.out.println(tQueue.toString());
+
+
+        ttQueue.addAll(tQueue);
+        System.out.println(ttQueue.toString()); // консольный дебажер
+
+
+
+//        System.out.println(ttQueue.toString()); // консольный дебажер
 
 
 
